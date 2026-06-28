@@ -1,0 +1,65 @@
+name: Deploy web to GitHub Pages
+
+# Builds web/ with the live Apps Script backend and publishes web/dist to Pages.
+# Trigger on pushes to main (adjust if your default branch differs), or run manually.
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+# Permissions the deploy-pages action needs.
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Let an in-progress deploy finish, but only keep the newest queued run.
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: web
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+          cache-dependency-path: web/package-lock.json
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build
+        env:
+          VITE_API_MODE: appsscript
+          # Stored as a repository Actions variable (Settings -> Secrets and
+          # variables -> Actions -> Variables). Not a secret: the /exec URL is
+          # called from the browser anyway.
+          VITE_APPSCRIPT_URL: ${{ vars.APPSCRIPT_URL }}
+          # Project Pages serve under /<repo>/, so base must match the repo name.
+          # Auto-derived here; override by hardcoding if you use a custom domain.
+          VITE_BASE: /${{ github.event.repository.name }}/
+        run: npm run build
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: web/dist
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
