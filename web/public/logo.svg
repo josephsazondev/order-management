@@ -1,0 +1,21 @@
+<svg width="64" height="64" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Ketolab Order Management">
+  <!-- Plate -->
+  <circle cx="32" cy="32" r="20" fill="none" stroke="#6b7d4f" stroke-width="2.5"/>
+  <circle cx="32" cy="32" r="13" fill="#f3f1e7" stroke="#b97c1e" stroke-width="1.5"/>
+  <!-- Greens on the plate -->
+  <path d="M32 38 C28 34 28 28 32 24 C36 28 36 34 32 38 Z" fill="#6b7d4f"/>
+  <path d="M27 35 C25 32 25.5 28 28 26 C29.5 29 29 33 27 35 Z" fill="#8a9a5b"/>
+  <path d="M37 35 C39 32 38.5 28 36 26 C34.5 29 35 33 37 35 Z" fill="#8a9a5b"/>
+  <circle cx="32" cy="35.5" r="2.2" fill="#b97c1e"/>
+  <!-- Fork -->
+  <g stroke="#3f4a2e" stroke-width="2" stroke-linecap="round" fill="none">
+    <path d="M12 12 L12 24"/>
+    <path d="M16 12 L16 24"/>
+    <path d="M14 24 L14 52"/>
+  </g>
+  <!-- Knife -->
+  <g stroke="#3f4a2e" stroke-width="2" stroke-linecap="round" fill="none">
+    <path d="M50 12 L50 52"/>
+    <path d="M50 12 C46 16 46 22 50 26"/>
+  </g>
+</svg>
